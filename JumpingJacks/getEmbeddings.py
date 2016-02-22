@@ -1,6 +1,6 @@
 #Purpose: 
 import sys
-sys.path.append("../../../PyMeshPipeline")
+sys.path.append("../")
 from VideoTools import *
 import matplotlib.pyplot as plt
 import numpy as np

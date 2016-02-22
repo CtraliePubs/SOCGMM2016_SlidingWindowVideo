@@ -2,7 +2,7 @@
 #Output the principal component videos (dynamic range scaled) for the supplemental video
 #For the paper, output an XT slice, showing where that XT slice is
 import sys
-sys.path.append("../../../PyMeshPipeline")
+sys.path.append("../")
 from VideoTools import *
 import matplotlib.pyplot as plt
 import numpy as np

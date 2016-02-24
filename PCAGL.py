@@ -9,11 +9,12 @@ from MeshCanvas import *
 SPHERE_RADIUS = 0.05
 
 class PCAGLCanvas(BasicMeshCanvas):
-    def __init__(self, parent, Y, C, angles):
+    def __init__(self, parent, Y, C, angles, prefix):
         BasicMeshCanvas.__init__(self, parent)
         self.Y = Y #Geometry
         self.C = C #Colors
         self.angles = angles #Angles to rotate the camera through as the trajectory is going
+        self.prefix = prefix
         self.frameNum = 0
         #Initialize sphere mesh
         self.mesh = getSphereMesh(SPHERE_RADIUS, 3)
@@ -47,25 +48,27 @@ class PCAGLCanvas(BasicMeshCanvas):
             self.camera.gotoCameraFrame()
             
             #Update position and color buffers for this point
-            self.mesh.VPos = self.mesh.VPos + Y[i, :]
+            self.mesh.VPos = self.mesh.VPos + self.Y[i, :]
             self.mesh.VColors = self.C[i, :]*np.ones(self.mesh.VPos.shape)
             self.mesh.needsDisplayUpdate = True
             glLightfv(GL_LIGHT0, GL_POSITION, np.array([0, 0, 0, 1]))
             self.mesh.renderGL(False, False, True, False, False, True, False)
             
             #Undo the translation
-            self.mesh.VPos = self.mesh.VPos - Y[i, :]
-        saveImageGL(self, "%i.png"%self.frameNum)
-        if self.frameNum < self.Y.shape[0]:
+            self.mesh.VPos = self.mesh.VPos - self.Y[i, :]
+        saveImageGL(self, "%s%i.png"%(self.prefix, self.frameNum))
+        if self.frameNum < self.Y.shape[0] - 1:
             self.frameNum += 1
             self.Refresh()
+        else:
+            self.parent.Destroy()
         
         self.SwapBuffers()
 
-def doPCAGLPlot(Y, C, angles):
+def doPCAGLPlot(Y, C, angles, prefix):
     app = wx.PySimpleApp()
-    frame = wx.Frame(None, wx.ID_ANY, "PCA GL Canvas", DEFAULT_POS, DEFAULT_SIZE)
-    g = PCAGLCanvas(frame, Y, C, angles)
+    frame = wx.Frame(None, wx.ID_ANY, "PCA GL Canvas", DEFAULT_POS, (800, 800))
+    g = PCAGLCanvas(frame, Y, C, angles, prefix)
     frame.canvas = g
     frame.Show()
     app.MainLoop()
@@ -87,4 +90,4 @@ if __name__ == '__main__':
     angles = math.pi/2*np.ones((N, 2))
     angles[:, 0] = np.linspace(0, np.pi, N)
     
-    doPCAGLPlot(Y, C, angles)
+    doPCAGLPlot(Y, C, angles, "Helix")

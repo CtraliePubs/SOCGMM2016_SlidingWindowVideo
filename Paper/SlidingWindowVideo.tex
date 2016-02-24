@@ -1,0 +1,158 @@
+\documentclass[a4paper,UKenglish]{lipics}
+%This is a template for producing LIPIcs articles. 
+%See lipics-manual.pdf for further information.
+%for A4 paper format use option "a4paper", for US-letter use option "letterpaper"
+%for british hyphenation rules use option "UKenglish", for american hyphenation rules use option "USenglish"
+% for section-numbered lemmas etc., use "numberwithinsect"
+ 
+\usepackage{microtype}%if unwanted, comment out or use option "draft"
+
+%\graphicspath{{./graphics/}}%helpful if your graphic files are in another directory
+
+\bibliographystyle{plain}% the recommended bibstyle
+
+% Author macros::begin %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{The Geometry of Sliding Windows of Periodic Videos}
+
+\author[1]{Christopher J. Tralie}
+\affil[1]{Department of Electrical and Computer Engineering, Duke University\\
+  Durham, NC USA
+  \texttt{chris.tralie@gmail.com}}
+\authorrunning{C.\,J Tralie} %mandatory. First: Use abbreviated first/middle names. Second (only in severe cases): Use first author plus 'et. al.'
+
+\Copyright{Christopher J. Tralie}%mandatory, please use full first names. LIPIcs license is "CC-BY";  http://creativecommons.org/licenses/by/3.0/
+
+\subjclass{I.2.10 Video Analysis, I.5.4 Pattern Recognition: Waveform Analysis, I.4.10 Image Representation: Multidimensional}% mandatory: Please choose ACM 1998 classifications from http://www.acm.org/about/class/ccs98-html . E.g., cite as "F.1.1 Models of Computation". 
+\keywords{Video Processing, High Dimensional Geometry, Circular Coordinates, Nonlinear Time Series}% mandatory: Please provide 1-5 keywords
+% Author macros::end %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Editor-only macros:: begin (do not touch as author)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\serieslogo{}%please provide filename (without suffix)
+\volumeinfo%(easychair interface)
+  {Billy Editor and Bill Editors}% editors
+  {2}% number of editors: 1, 2, ....
+  {Conference title on which this volume is based on}% event
+  {1}% volume
+  {1}% issue
+  {1}% starting page number
+\EventShortName{}
+\DOI{10.4230/LIPIcs.xxx.yyy.p}% to be completed by the volume editor
+% Editor-only macros::end %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+
+\end{abstract}
+
+\section{Video Dynamics And Subspace Geometry}
+
+%Explain the advantages over Fourier: automatically finding harmonics, and also able to represent motion without sinc bleed
+
+
+
+\subsection{Video Delay Embeddings}
+We use a sliding window through time, also known as a ``delay embedding" in the dynamical systems literature \cite{kantz2004nonlinear}, to capture the dynamics of a periodic video.  More precisely, 
+
+\begin{definition}
+Given a discrete video $X[n] \in \mathbb{R}^{W \times H}$, where $n \in \mathbb{Z}^+$ is a discrete time index, the video is {\em periodic} if there exists a $T \in \mathbb{Z}^+$ so that $X[n] = X[n + T]$ for all $t$.
+\end{definition}
+
+\begin{definition}
+Given a video $X[n] \in \mathbb{R}^{W \times H}$ and a window size $M$, {\em delay embedding} $Y[n]$ is formed as 
+\begin{equation}
+Y[n] = \left[ \begin{array}{c} X[n] \\ X[n + 1] \\ X[n+2] \\ \vdots \\ X[n + (M-1)] \end{array} \right] \in \mathbb{R}^{W \times H \times M}
+\end{equation}
+\end{definition}
+
+\begin{figure}[]
+	\centering
+	\includegraphics[width=0.5\columnwidth]{../JumpingJacks/VideoStackTime.pdf}
+	\caption{A depiction of a discrete delay embedding of a video of a woman doing jumping jacks with a sliding window embedding of length $M$}
+	\label{fig:VideoDiscreteDelayEmbedding}
+\end{figure}
+
+As $n$ varies, $Y[n]$ traces out a samples of a 1-manifold in $\mathbb{R}^{W \times H \times M}$, though for a video of $F$ frames, it lies on a $F-1$ dimensional subspace, which we exploit to speed up processing. Figure~\ref{fig:VideoDiscreteDelayEmbedding} shows a pictorial depiction of this scheme.
+
+\subsection{Hypertorus Video Model}
+\label{sec:VideoModel}
+
+%\begin{itemize}
+%\item Define a fixed period $T \in \mathbb{R^+}$ and a fixed phase shift $\phi \in \mathbb{R}$
+%\item Let $I$ be some indexing set into the $N$ pixels of a video frame $[n]$, and let $X_i[n]$, $i \in I$, be a 1-parameter function describing how a pixel at location $i$ evolves in time
+%\item Let $g_i(t)$ be an arbitrary 1D function associated with pixel $i$
+%\item Let $A$ be a constant associated with amplitude of oscillation.
+%\end{itemize}
+
+We now characterize the high dimensional geometry of sliding window embeddings of periodic videos, following a similar analysis to recent work that was done showing that delay embeddings of 1D time series of periodic processes \cite{perea2013sliding}.  We start by assuming very general model for periodic videos.  For a period $T$ and for constants $A$ and $\phi$, and for an arbitrary function $g_i$ at each pixel $X_i$, define the grayscale level at pixel $X_i$ as 
+
+\begin{equation}
+X_i[n] = g_i \left( A \cos \left( \frac{2 \pi}{T} n + \phi \right) \right)
+\end{equation}
+
+That is, each pixel is an arbitrary function composed with a scale of the same cosine.  Though the function at each pixel may differ, the functions across all pixels are globally {\em in phase}.  This means that the model has mirror symmetry built in.  In particular,
+
+\begin{equation}
+X_i[n] = X_i\left[ T - \left(n + \phi \frac{T}{\pi} \right) \right]
+\end{equation}
+
+That is, each pixel repeats itself during the second half of its period, but in reverse.  This means that a raw embedding (sliding window size of 1) traces out a curved path between two states $X_a$ and $X_b$.  During the first half of the period the path goes between $X_a$ and $X_b$, and during the second half of the period it follows the {\em exact same} path but in reverse from $X_b$ to $X_a$.  On the other hand, a sliding window size of appropriate length can turn this path into a topological loop by taking a different trajectory from $X_b$ to $X_a$ than was taken from $X_a$ to $X_b$.  A similar observation was made in early work on video textures \cite{schodl2000video}.
+
+To analyze the geometry of the sliding window loops in more detail, express each pixel as a discrete cosine transform with $T$ terms, which is sufficient to summarize it over its period.  Storing all $T$ terms for all $N$ pixels in a period in the $N \times T$ matrix $D$
+
+\begin{equation}
+X_i[n] = \sum_{k = 0}^{T-1} D_{ik} \cos \left( \frac{2 \pi}{T} k n  \right)
+\end{equation}
+
+With this expansion, all pixels can easily be combined into a vector of the following form:
+
+\begin{equation}
+\label{eq:rawexpansion}
+X[n] = \sum_{k = 0}^{T-1} \cos \left( \frac{2 \pi}{T} k n \right) D_k
+\end{equation}
+
+where $D_k$ is the $k^{\text{th}}$ column of the matrix of DCT coefficients.  A sliding window of length $M$ then takes the following form:
+
+\begin{equation}
+Y[n] = \sum_{k = 0}^{T-1} \left[ \begin{array}{c} D_k \cos \left( \frac{2 \pi}{T} k n \right)  \\ D_k \cos \left( \frac{2 \pi}{T} k (n+1) \right) \\ D_k \cos \left( \frac{2 \pi}{T} k (n+2) \right) \\  \vdots \\ D_k \cos \left( \frac{2 \pi}{T} k (n+M-1) \right) \end{array} \right] 
+\end{equation}
+
+
+using the cosine sum identity, this can be rewritten as
+
+\begin{equation}
+Y[n] = \sum_{k = 0}^{T-1} \cos \left( \frac{2 \pi}{T} k n \right) \left[ \begin{array}{c} D_k \\ D_k \cos \left( \frac{2 \pi k}{T} \right) \\ D_k \cos \left( 2 \frac{2 \pi k}{T} \right) \\ D_k \cos \left( 3 \frac{2 \pi k}{T} \right) \\ \vdots \\ D_k \cos \left( (M-1) \frac{2 \pi k}{T} \right) \end{array} \right] + \sin \left( \frac{2 \pi}{T} k n \right) \left[ \begin{array}{c} 0_N \\ D_k \sin \left( \frac{2 \pi k}{T} \right) \\ D_k \sin \left( 2 \frac{2 \pi k}{T} \right) \\ D_k \sin \left( 3 \frac{2 \pi k}{T} \right) \\ \vdots \\ D_k \sin \left( (M-1) \frac{2 \pi k}{T} \right) \end{array} \right]
+\end{equation}
+
+%Define the vectors $V^s_k$ and $V^c_k$ so that the above equation reads
+
+%\begin{equation}
+%Y[n] = \sum_{k = 0}^{T-1} \cos \left( \frac{2 \pi}{T} k n \right) V^c_k + \sin \left( \frac{2 \pi}{T} k n \right) V^s_k
+%\end{equation}
+
+Hence, the path that is traced out varying $n$ is the sum of $d \leq T/2$ independent ellipses, which lives on a topological $d$-torus, corresponding to $2d$ nonzero columns in $D$
+
+
+\section{Circular Coordinates}
+
+
+We use cohomology circular coordinates to parameterize the motion of the video embeddings \cite{de2011persistent}.
+
+To show that there indeed is a periodic process going on, we use phase-based video motion amplification (\cite{wadhwa2013phase}) to amplify all motions within the frequency band consistent with the parameterization found 
+
+%TODO: Show persistence diagrams, loop versus non-loop, and cohomology circular coordinates
+
+
+%%
+%% Bibliography
+%%
+
+%% Either use bibtex (recommended), but commented out in this sample
+
+\bibliography{SlidingWindowVideo}
+
+
+
+\end{document}

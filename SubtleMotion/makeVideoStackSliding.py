@@ -56,12 +56,6 @@ if __name__ == '__main__':
     
     N = Vid.shape[1]
     M = N-WinLen+1
-    skip = 2
-    
-    movex = 0.3
-    movey = 0.25
-    
-    [H, W] = [IDims[0], IDims[1]]
 
     #Step 2: Output 3D PCA synchronized with original video
     subprocess.call(["avconv", "-i", "myneck.ogg", "-f" , "image2", "frames%00d.png"]) 

@@ -16,6 +16,9 @@ if __name__ == '__main__':
     s_I_mean = tde_mean(s_I,WinLen)
     (Y, S) = tde_rightsvd(s_I,WinLen,s_I_mean)
     Y = S[None, :]*Y
+    Y = Y/np.max(np.abs(Y))
+    sio.savemat("Y.mat", {"Y":Y})
+    np.savetxt("Y.txt", Y, fmt='%g', delimiter=' ', newline='\n')
     Y = Y[:, 0:3]
     c = plt.get_cmap('jet')
     C = c(np.array(np.round(np.linspace(0, 255, Y.shape[0])), dtype=np.int64))
@@ -23,9 +26,11 @@ if __name__ == '__main__':
     angles = math.pi/2*np.ones((Y.shape[0], 2))
     angles[:, 0] = np.linspace(0, np.pi/2, Y.shape[0])
     
-    print "Variance Explained: ", 100*np.sum(S[0:3])/np.sum(S), "%"
+    fout = open("VarExplained.txt", "w")
+    fout.write("Variance Explained: %g Percent"%(100*np.sum(S[0:3])/np.sum(S)))
+    fout.close()
     
-    Y = Y/np.max(np.abs(Y))
+
     plt.scatter(Y[:, 0], Y[:, 1], 20, C)
     plt.show()
     

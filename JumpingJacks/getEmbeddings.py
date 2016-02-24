@@ -9,6 +9,7 @@ if __name__ == '__main__':
     (I, IDims) = loadCVVideo('jumpingjackscropped.avi')
     Ws = [1, 34]
     (data_subspace, s_I) = tde_tosubspace(I, I.shape[1])
+    idx = 0
     for W in Ws:
         # perform amplification of the reduced representation
         s_I_mean = tde_mean(s_I,W)
@@ -34,4 +35,5 @@ if __name__ == '__main__':
         ax.set_xlabel('Frame Number')
         ax.set_ylabel('Frame Number')
         ax.set_title('Self-Similarity Matrix')
-        plt.show()
+        idx += 1
+    plt.show()

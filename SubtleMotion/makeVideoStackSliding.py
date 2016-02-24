@@ -37,21 +37,23 @@ if __name__ == '__main__':
     S = S[4:]
     Y = Y[:, 4:]
     Y = S[None, :]*Y
+    Y = Y/np.max(np.abs(Y))
+    sio.savemat("Y.mat", {"Y":Y})
+    np.savetxt("Y.txt", Y, fmt='%g', delimiter=' ', newline='\n')
     Y = Y[:, 0:3]
     c = plt.get_cmap('jet')
     C = c(np.array(np.round(np.linspace(0, 255, Y.shape[0])), dtype=np.int64))
     C = C[:, 0:3]
     angles = math.pi/2*np.ones((Y.shape[0], 2))
-    angles[:, 0] = np.linspace(0, np.pi/4, Y.shape[0])
+    angles[:, 0] = np.pi/4-np.linspace(0, np.pi/4, Y.shape[0])
     angles[:, 1] = np.linspace(np.pi/2 - np.pi/4, np.pi/2, Y.shape[0])
     
-    print "Variance Explained: ", 100*np.sum(S[0:3])/np.sum(S), "%"
-    
-    Y = Y/np.max(np.abs(Y))
-    sio.savemat("Y.mat", {"Y":Y})
+    fout = open("VarExplained.txt", "w")
+    fout.write("Variance Explained: %g Percent"%(100*np.sum(S[0:3])/np.sum(S)))
+    fout.close()
     
     #Step 1: Ouput 3D PCA
-    doPCAGLPlot(Y, C, angles, "Points")
+    %doPCAGLPlot(Y, C, angles, "Points")
     
     
     N = Vid.shape[1]

@@ -132,7 +132,7 @@ Y[n] = \sum_{k = 0}^{T-1} \cos \left( \frac{2 \pi}{T} k n \right) \left[ \begin{
 %Y[n] = \sum_{k = 0}^{T-1} \cos \left( \frac{2 \pi}{T} k n \right) V^c_k + \sin \left( \frac{2 \pi}{T} k n \right) V^s_k
 %\end{equation}
 
-Hence, the path that is traced out varying $n$ is the sum of $d \leq T/2$ independent ellipses, which lives on a topological $d$-torus, corresponding to $2d$ nonzero columns in $D$.  In other words, each sinusoidal mode in the video adds an ellipse on a linearly independent plane.
+Hence, the path that is traced out varying $n$ is the sum of $d \leq T/2$ independent ellipses, which lives on a topological $d$-torus, corresponding to $2d$ nonzero columns in $D$.  In other words, each sinusoidal mode in the video adds an ellipse on a linearly independent plane.  \cite{perea2013sliding} follows a similar line of reasoning to show that delay embeddings of 1D periodic signals live on a hypertorus.
 
 
 \section{Circular Coordinates}
@@ -141,6 +141,28 @@ Hence, the path that is traced out varying $n$ is the sum of $d \leq T/2$ indepe
 We use cohomology circular coordinates to parameterize the motion of the video embeddings \cite{de2011persistent}.
 
 To show that there indeed is a periodic process going on, we use phase-based video motion amplification (\cite{wadhwa2013phase}) to amplify all motions within the frequency band consistent with the parameterization found 
+
+\begin{figure}[]
+	\centering
+	\includegraphics[width=\textwidth]{JumpingJacksPCADGMCC.pdf}
+	\caption{Jumping Jacks}
+	\label{fig:JumpingJacks}
+\end{figure}
+
+\begin{figure}[]
+	\centering
+	\includegraphics[width=\textwidth]{BeatingHeartSyntheticPCADGMCC.pdf}
+	\caption{Beating heart synthetic}
+	\label{fig:JumpingJacks}
+\end{figure}
+
+
+\begin{figure}[]
+	\centering
+	\includegraphics[width=\textwidth]{NeckBeatPCADGMCC.pdf}
+	\caption{Neck beating}
+	\label{fig:NeckBeating}
+\end{figure}
 
 %TODO: Show persistence diagrams, loop versus non-loop, and cohomology circular coordinates
 

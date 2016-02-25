@@ -13,6 +13,10 @@ if __name__ == '__main__':
     NPeriods = N/T
     t = np.linspace(0, 2*np.pi*NPeriods, N)
     x = np.cos(t) + np.cos(3*t)
+    plt.plot(x)
+    plt.title('cos(t) + cos(3t)')
+    plt.axis('off')
+    plt.show()
     W = T
     M = N-W+1
     y = getSlidingWindowEmbedding(x, W)

@@ -12,7 +12,7 @@
 \bibliographystyle{plain}% the recommended bibstyle
 
 % Author macros::begin %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\title{The Geometry of Sliding Windows of Periodic Videos}
+\title{High Dimensional Geometry of Sliding Window Embeddings of Periodic Videos}
 
 \author[1]{Christopher J. Tralie}
 \affil[1]{Department of Electrical and Computer Engineering, Duke University\\
@@ -44,7 +44,7 @@
 \maketitle
 
 \begin{abstract}
-
+We explore the high dimensional geometry of sliding windows of periodic videos.  We show that the sliding window is necessary to disambiguate all states within a period, and we show that a video embedding with a sliding window of an appropriate dimension lies on a topological loop along a hypertorus, and that this hypertorus has an independent ellipse for each harmonic of the motion.  Natural motions with sharp transitions from foreground to background have many harmonics and are hence in higher dimensions, so PCA visualizations do not accurately summarize the geometry of these videos.  Noting this, we invoke tools from topological data analysis and cohomology to parameterize motions in high dimensions with circular coordinates.  We show applications to videos in which there is obvious periodic motion, as well as videos in which the motion is hidden.
 \end{abstract}
 
 \section{Video Dynamics And Subspace Geometry}
@@ -79,6 +79,13 @@ As $n$ varies, $Y[n]$ traces out a samples of a 1-manifold in $\mathbb{R}^{W \ti
 \subsection{Hypertorus Video Model}
 \label{sec:VideoModel}
 
+\begin{figure}[]
+	\centering
+	\includegraphics[width=0.5\textwidth]{JumpingJacksPCs.png}
+	\caption{XT slices of the principal components of a sliding window of length 34 on the jumping jacks videos.  The green line on the left image shows the X slice that is represented in the plots}
+	\label{fig:JumpingJacksPCs}
+\end{figure}
+
 %\begin{itemize}
 %\item Define a fixed period $T \in \mathbb{R^+}$ and a fixed phase shift $\phi \in \mathbb{R}$
 %\item Let $I$ be some indexing set into the $N$ pixels of a video frame $[n]$, and let $X_i[n]$, $i \in I$, be a 1-parameter function describing how a pixel at location $i$ evolves in time
@@ -92,13 +99,7 @@ We now characterize the high dimensional geometry of sliding window embeddings o
 X_i[n] = g_i \left( A \cos \left( \frac{2 \pi}{T} n + \phi \right) \right)
 \end{equation}
 
-That is, each pixel is an arbitrary function composed with a scale of the same cosine.  Though the function at each pixel may differ, the functions across all pixels are globally {\em in phase}.  This means that the model has mirror symmetry built in.  In particular,
-
-\begin{equation}
-X_i[n] = X_i\left[ T - \left(n + \phi \frac{T}{\pi} \right) \right]
-\end{equation}
-
-That is, each pixel repeats itself during the second half of its period, but in reverse.  This means that a raw embedding (sliding window size of 1) traces out a curved path between two states $X_a$ and $X_b$.  During the first half of the period the path goes between $X_a$ and $X_b$, and during the second half of the period it follows the {\em exact same} path but in reverse from $X_b$ to $X_a$.  On the other hand, a sliding window size of appropriate length can turn this path into a topological loop by taking a different trajectory from $X_b$ to $X_a$ than was taken from $X_a$ to $X_b$.  A similar observation was made in early work on video textures \cite{schodl2000video}.
+That is, each pixel is an arbitrary function composed with a scale of the same cosine.  Though the function at each pixel may differ, the functions across all pixels are globally {\em in phase}.  This means that the model has mirror symmetry built in.  In particular $X_i[n] = X_i\left[ T - \left(n + \phi \frac{T}{\pi} \right) \right]$.  That is, each pixel repeats itself during the second half of its period, but in reverse.  This means that a raw embedding (sliding window size of 1) traces out a curved path between two states $X_a$ and $X_b$.  During the first half of the period the path goes between $X_a$ and $X_b$, and during the second half of the period it follows the {\em exact same} path but in reverse from $X_b$ to $X_a$.  On the other hand, a sliding window size of appropriate length can turn this path into a topological loop by taking a different trajectory from $X_b$ to $X_a$ than was taken from $X_a$ to $X_b$.  A similar observation was made in early work on video textures \cite{schodl2000video}.
 
 To analyze the geometry of the sliding window loops in more detail, express each pixel as a discrete cosine transform with $T$ terms, which is sufficient to summarize it over its period.  Storing all $T$ terms for all $N$ pixels in a period in the $N \times T$ matrix $D$
 
@@ -132,37 +133,51 @@ Y[n] = \sum_{k = 0}^{T-1} \cos \left( \frac{2 \pi}{T} k n \right) \left[ \begin{
 %Y[n] = \sum_{k = 0}^{T-1} \cos \left( \frac{2 \pi}{T} k n \right) V^c_k + \sin \left( \frac{2 \pi}{T} k n \right) V^s_k
 %\end{equation}
 
-Hence, the path that is traced out varying $n$ is the sum of $d \leq T/2$ independent ellipses, which lives on a topological $d$-torus, corresponding to $2d$ nonzero columns in $D$.  In other words, each sinusoidal mode in the video adds an ellipse on a linearly independent plane.  \cite{perea2013sliding} follows a similar line of reasoning to show that delay embeddings of 1D periodic signals live on a hypertorus.
+Hence, the path that is traced out varying $n$ is the sum of $d \leq T/2$ independent ellipses, each spanned by a plane.  Such paths live on a topological $d$-torus, corresponding to $2d$ nonzero columns in $D$.  In other words, each sinusoidal mode in the video adds an ellipse on a linearly independent plane.  In our video, we also offer another perspective on this fact by plotting the phase of each independent sinusoid along a different dimension of at the principle square/cube/hypercube of the torus.  This is also shown in \cite{perea2013sliding}.
 
 
 \section{Circular Coordinates}
 
-
-We use cohomology circular coordinates to parameterize the motion of the video embeddings \cite{de2011persistent}.
-
-To show that there indeed is a periodic process going on, we use phase-based video motion amplification (\cite{wadhwa2013phase}) to amplify all motions within the frequency band consistent with the parameterization found 
-
 \begin{figure}[]
 	\centering
 	\includegraphics[width=\textwidth]{JumpingJacksPCADGMCC.pdf}
-	\caption{Jumping Jacks}
+	\caption{Sliding window embedding of a woman doing jumping jacks}
 	\label{fig:JumpingJacks}
 \end{figure}
 
 \begin{figure}[]
 	\centering
 	\includegraphics[width=\textwidth]{BeatingHeartSyntheticPCADGMCC.pdf}
-	\caption{Beating heart synthetic}
-	\label{fig:JumpingJacks}
+	\caption{Sliding window embedding of a heartbeat animation}
+	\label{fig:BeatingHeart}
 \end{figure}
+
 
 
 \begin{figure}[]
 	\centering
 	\includegraphics[width=\textwidth]{NeckBeatPCADGMCC.pdf}
-	\caption{Neck beating}
+	\caption{Sliding window embedding of a video of a person sitting still, which has hidden periodic motion}
 	\label{fig:NeckBeating}
 \end{figure}
+
+
+
+%.  From right to left: An example point in the sliding window embedding made up of a stack of frames, 3D PCA of all sliding windows, the 1D persistence diagram of the Rips cohomology filtration, and the circular coordinates corresponding to the strongest 1D homology class
+
+Now that we know that the sliding window embeddings of videos lie on a highly curved topological loop on a hypertorus, we can use high dimensional data analysis tools to extract information about these loops.  We turn to the theory of 1D persitent homology and Rips Complexes to measure the geometric prominence of the loops in high dimensions.  In particular, we use cohomology circular coordinates to parameterize the motion of the video embeddings \cite{de2011persistent}.  Figure~\ref{fig:JumpingJacks} shows an example
+
+To show that there indeed is a periodic process going on, we use phase-based video motion amplification (\cite{wadhwa2013phase}) to amplify all motions within the frequency band consistent with the parameterization found 
+
+%\begin{figure}[]
+%	\centering
+%	\includegraphics[width=0.7\textwidth]{JumpingJacksPCAPDRaw.pdf}
+%	\caption{Jumping Jacks raw}
+%	\label{fig:JumpingJacksRaw}
+%\end{figure}
+
+
+
 
 %TODO: Show persistence diagrams, loop versus non-loop, and cohomology circular coordinates
 

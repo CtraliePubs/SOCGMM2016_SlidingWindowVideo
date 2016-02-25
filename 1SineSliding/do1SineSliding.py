@@ -23,5 +23,3 @@ if __name__ == '__main__':
     output1DSliding(x, y, N, W, (-6, 6))
     subprocess.call(["rm", "1sine.ogg"])
     subprocess.call(["avconv", "-r", "60", "-i", "%d.png", "-r", "60", "-b", "30000k", "1sine.ogg"])
-    for i in range(M):
-        os.remove("%i.png"%i)

@@ -44,7 +44,7 @@
 \maketitle
 
 \begin{abstract}
-We explore the high dimensional geometry of sliding windows of periodic videos.  We show that the sliding window is necessary to disambiguate all states within a period, and we show that a video embedding with a sliding window of an appropriate dimension lies on a topological loop along a hypertorus, and that this hypertorus has an independent ellipse for each harmonic of the motion.  Natural motions with sharp transitions from foreground to background have many harmonics and are hence in higher dimensions, so PCA visualizations do not accurately summarize the geometry of these videos.  Noting this, we invoke tools from topological data analysis and cohomology to parameterize motions in high dimensions with circular coordinates.  We show applications to videos in which there is obvious periodic motion, as well as videos in which the motion is hidden.
+We explore the high dimensional geometry of sliding windows of periodic videos. Under a reasonable model for periodic videos, we show that the sliding window is necessary to disambiguate all states within a period, and we show that a video embedding with a sliding window of an appropriate dimension lies on a topological loop along a hypertorus, and that this hypertorus has an independent ellipse for each harmonic of the motion.  Natural motions with sharp transitions from foreground to background have many harmonics and are hence in higher dimensions, so PCA visualizations do not accurately summarize the geometry of these videos.  Noting this, we invoke tools from topological data analysis and cohomology to parameterize motions in high dimensions with circular coordinates after the embeddings.  We show applications to videos in which there is obvious periodic motion, as well as videos in which the motion is hidden.
 \end{abstract}
 
 \section{Video Dynamics And Subspace Geometry}
@@ -82,7 +82,7 @@ As $n$ varies, $Y[n]$ traces out a samples of a 1-manifold in $\mathbb{R}^{W \ti
 \begin{figure}[]
 	\centering
 	\includegraphics[width=0.5\textwidth]{JumpingJacksPCs.png}
-	\caption{XT slices of the principal components of a sliding window of length 34 on the jumping jacks videos.  The green line on the left image shows the X slice that is represented in the plots}
+	\caption{XT slices of the principal components of a sliding window of length 34 on the jumping jacks videos.  The green line on the left image shows the X slice that is represented in the plots.  Each row corresponds to the two axes of an independent ellipse in the delay embedding}
 	\label{fig:JumpingJacksPCs}
 \end{figure}
 
@@ -93,38 +93,32 @@ As $n$ varies, $Y[n]$ traces out a samples of a 1-manifold in $\mathbb{R}^{W \ti
 %\item Let $A$ be a constant associated with amplitude of oscillation.
 %\end{itemize}
 
-We now characterize the high dimensional geometry of sliding window embeddings of periodic videos, following a similar analysis to recent work that was done showing that delay embeddings of 1D time series of periodic processes \cite{perea2013sliding}.  We start by assuming very general model for periodic videos.  For a period $T$ and for constants $A$ and $\phi$, and for an arbitrary function $g_i$ at each pixel $X_i$, define the grayscale level at pixel $X_i$ as 
+We now characterize the high dimensional geometry of sliding window embeddings of periodic videos, following a similar analysis to recent on delay embeddings of 1D time series \cite{perea2013sliding} (which we also summarize in our video).  We start by assuming very general model for periodic videos.  For a period $T$ and for constants $A$ and $\phi$, and for an arbitrary function $g_i$ at each pixel $X_i$, define the grayscale level at pixel $X_i$ as 
 
 \begin{equation}
 X_i[n] = g_i \left( A \cos \left( \frac{2 \pi}{T} n + \phi \right) \right)
 \end{equation}
 
-That is, each pixel is an arbitrary function composed with a scale of the same cosine.  Though the function at each pixel may differ, the functions across all pixels are globally {\em in phase}.  This means that the model has mirror symmetry built in.  In particular $X_i[n] = X_i\left[ T - \left(n + \phi \frac{T}{\pi} \right) \right]$.  That is, each pixel repeats itself during the second half of its period, but in reverse.  This means that a raw embedding (sliding window size of 1) traces out a curved path between two states $X_a$ and $X_b$.  During the first half of the period the path goes between $X_a$ and $X_b$, and during the second half of the period it follows the {\em exact same} path but in reverse from $X_b$ to $X_a$.  On the other hand, a sliding window size of appropriate length can turn this path into a topological loop by taking a different trajectory from $X_b$ to $X_a$ than was taken from $X_a$ to $X_b$.  A similar observation was made in early work on video textures \cite{schodl2000video}.
+That is, each pixel is an arbitrary function composed with a scale of the same cosine.  Though the function at each pixel may differ, the functions across all pixels are globally {\em in phase}.  This means that the model has mirror symmetry built in.  In particular $X_i[n] = X_i\left[ T - \left(n + \phi \frac{T}{\pi} \right) \right]$.  That is, each pixel repeats itself during the second half of its period, but in reverse, making it is impossible to disambiguate ``going there" from ``coming back."  On the other hand, a sliding window size of appropriate length can turn this path into a topological loop by taking a different trajectory from $X_b$ to $X_a$ than was taken from $X_a$ to $X_b$.  A similar observation was made in early work on video textures \cite{schodl2000video}.  To see this, express each pixel as a discrete cosine transform with $T$ terms, which is sufficient to summarize it over its period.  Storing all $T$ terms for all $N$ pixels in a period in the $N \times T$ matrix $D$,  all pixels can easily be combined into a column vector of the following form:
 
-To analyze the geometry of the sliding window loops in more detail, express each pixel as a discrete cosine transform with $T$ terms, which is sufficient to summarize it over its period.  Storing all $T$ terms for all $N$ pixels in a period in the $N \times T$ matrix $D$
 
-\begin{equation}
-X_i[n] = \sum_{k = 0}^{T-1} D_{ik} \cos \left( \frac{2 \pi}{T} k n  \right)
-\end{equation}
-
-With this expansion, all pixels can easily be combined into a vector of the following form:
 
 \begin{equation}
 \label{eq:rawexpansion}
-X[n] = \sum_{k = 0}^{T-1} \cos \left( \frac{2 \pi}{T} k n \right) D_k
+X[n] = \sum_{k = 0}^{T-1} \cos \left( \frac{2 \pi}{T} k n \right) D^k
 \end{equation}
 
-where $D_k$ is the $k^{\text{th}}$ column of the matrix of DCT coefficients.  A sliding window of length $M$ then takes the following form:
+where $D^k$ is the $k^{\text{th}}$ column of the matrix of DCT coefficients.  A sliding window of length $M$ then takes the following form:
 
 \begin{equation}
-Y[n] = \sum_{k = 0}^{T-1} \left[ \begin{array}{c} D_k \cos \left( \frac{2 \pi}{T} k n \right)  \\ D_k \cos \left( \frac{2 \pi}{T} k (n+1) \right) \\ D_k \cos \left( \frac{2 \pi}{T} k (n+2) \right) \\  \vdots \\ D_k \cos \left( \frac{2 \pi}{T} k (n+M-1) \right) \end{array} \right] 
+Y[n] = \sum_{k = 0}^{T-1} \left[ \begin{array}{c} D^k \cos \left( \frac{2 \pi}{T} k n \right)  \\ D^k \cos \left( \frac{2 \pi}{T} k (n+1) \right) \\ D^k \cos \left( \frac{2 \pi}{T} k (n+2) \right) \\  \vdots \\ D^k \cos \left( \frac{2 \pi}{T} k (n+M-1) \right) \end{array} \right] 
 \end{equation}
 
 
 using the cosine sum identity, this can be rewritten as
 
 \begin{equation}
-Y[n] = \sum_{k = 0}^{T-1} \cos \left( \frac{2 \pi}{T} k n \right) \left[ \begin{array}{c} D_k \\ D_k \cos \left( \frac{2 \pi k}{T} \right) \\ D_k \cos \left( 2 \frac{2 \pi k}{T} \right) \\ D_k \cos \left( 3 \frac{2 \pi k}{T} \right) \\ \vdots \\ D_k \cos \left( (M-1) \frac{2 \pi k}{T} \right) \end{array} \right] + \sin \left( \frac{2 \pi}{T} k n \right) \left[ \begin{array}{c} 0_N \\ D_k \sin \left( \frac{2 \pi k}{T} \right) \\ D_k \sin \left( 2 \frac{2 \pi k}{T} \right) \\ D_k \sin \left( 3 \frac{2 \pi k}{T} \right) \\ \vdots \\ D_k \sin \left( (M-1) \frac{2 \pi k}{T} \right) \end{array} \right]
+Y[n] = \sum_{k = 0}^{T-1} \cos \left( \frac{2 \pi}{T} k n \right) \left[ \begin{array}{c} D^k \\ D^k \cos \left( \frac{2 \pi k}{T} \right) \\ D^k \cos \left( 2 \frac{2 \pi k}{T} \right) \\ D^k \cos \left( 3 \frac{2 \pi k}{T} \right) \\ \vdots \\ D^k \cos \left( (M-1) \frac{2 \pi k}{T} \right) \end{array} \right] + \sin \left( \frac{2 \pi}{T} k n \right) \left[ \begin{array}{c} 0^N \\ D^k \sin \left( \frac{2 \pi k}{T} \right) \\ D^k \sin \left( 2 \frac{2 \pi k}{T} \right) \\ D^k \sin \left( 3 \frac{2 \pi k}{T} \right) \\ \vdots \\ D^k \sin \left( (M-1) \frac{2 \pi k}{T} \right) \end{array} \right]
 \end{equation}
 
 %Define the vectors $V^s_k$ and $V^c_k$ so that the above equation reads
@@ -133,17 +127,19 @@ Y[n] = \sum_{k = 0}^{T-1} \cos \left( \frac{2 \pi}{T} k n \right) \left[ \begin{
 %Y[n] = \sum_{k = 0}^{T-1} \cos \left( \frac{2 \pi}{T} k n \right) V^c_k + \sin \left( \frac{2 \pi}{T} k n \right) V^s_k
 %\end{equation}
 
-Hence, the path that is traced out varying $n$ is the sum of $d \leq T/2$ independent ellipses, each spanned by a plane.  Such paths live on a topological $d$-torus, corresponding to $2d$ nonzero columns in $D$.  In other words, each sinusoidal mode in the video adds an ellipse on a linearly independent plane.  In our video, we also offer another perspective on this fact by plotting the phase of each independent sinusoid along a different dimension of at the principle square/cube/hypercube of the torus.  This is also shown in \cite{perea2013sliding}.
-
-
-\section{Circular Coordinates}
-
 \begin{figure}[]
 	\centering
 	\includegraphics[width=\textwidth]{JumpingJacksPCADGMCC.pdf}
 	\caption{Sliding window embedding of a woman doing jumping jacks}
 	\label{fig:JumpingJacks}
 \end{figure}
+
+Hence, the path that is traced out varying $n$ is the sum of $d \leq T/2$ independent ellipses, each spanned by a plane.  Such paths live on a topological $d$-torus, corresponding to $2d$ nonzero columns in $D$, with 2 dimensions for each independent ellipse.  Also, axes in the embedding space are themselves videos with $T$ frames.  Figure~\ref{fig:JumpingJacksPCs} shows an XT slice of the first 8 principal components of the jumping jacks delay embedding.  Lower frequency ellipse axes correspond to smooth sinusoidal motions, while higher axes correspond to higher harmonics.
+
+
+\section{Circular Coordinates}
+
+
 
 \begin{figure}[]
 	\centering
@@ -157,7 +153,7 @@ Hence, the path that is traced out varying $n$ is the sum of $d \leq T/2$ indepe
 \begin{figure}[]
 	\centering
 	\includegraphics[width=\textwidth]{NeckBeatPCADGMCC.pdf}
-	\caption{Sliding window embedding of a video of a person sitting still, which has hidden periodic motion}
+	\caption{Sliding window embedding of a video of a person sitting still, which has hidden periodic motion due to the person's heartbeat}
 	\label{fig:NeckBeating}
 \end{figure}
 
@@ -165,9 +161,7 @@ Hence, the path that is traced out varying $n$ is the sum of $d \leq T/2$ indepe
 
 %.  From right to left: An example point in the sliding window embedding made up of a stack of frames, 3D PCA of all sliding windows, the 1D persistence diagram of the Rips cohomology filtration, and the circular coordinates corresponding to the strongest 1D homology class
 
-Now that we know that the sliding window embeddings of videos lie on a highly curved topological loop on a hypertorus, we can use high dimensional data analysis tools to extract information about these loops.  We turn to the theory of 1D persitent homology and Rips Complexes to measure the geometric prominence of the loops in high dimensions.  In particular, we use cohomology circular coordinates to parameterize the motion of the video embeddings \cite{de2011persistent}.  Figure~\ref{fig:JumpingJacks} shows an example
-
-To show that there indeed is a periodic process going on, we use phase-based video motion amplification (\cite{wadhwa2013phase}) to amplify all motions within the frequency band consistent with the parameterization found 
+Now that we know that the sliding window embeddings of videos lie on a highly curved topological loop on a hypertorus, we can use high dimensional data analysis tools to extract information about these loops.  We turn to the theory of 1D persistent homology and Rips Complexes to measure the geometric prominence of the loops in high dimensions.  In particular, we use cohomology circular coordinates to parameterize the motion of the video embeddings \cite{de2011persistent}.  Figure~\ref{fig:JumpingJacks} shows an example of applying 1D Rips and persistent cohomology to extract circular coordinates for the jumping jack example.  The loop is visible with 3D PCA, but very little of the variance is explained by the first 3 components since this video has sharp transitions from foreground to background, which need to be represented with many harmonics, as shown in our video.  But the circular coordinates are able to parameterize the motion in high dimensions.  A similar pattern is visible for a synthetic beating heart video in Figure~\ref{fig:BeatingHeart}.  We can also apply our techniques to videos with very subtle motions.  Figure~\ref{fig:NeckBeating} shows such an example with a person sitting still in front of a camera.  Hardly any motion is visible, but the persistence diagram and circular coordinates indicate the presence of a cycle.  In fact, this cycle corresponds to twice the person's heartbeat, which exists as a low magnitude vibration in the video.  To show that there indeed is a periodic process going on, we use phase-based video motion amplification (\cite{wadhwa2013phase}) to amplify all motions within the frequency band consistent with the parameterization found.  As a next step, we are currently working on other examples in which there are two possibly non-commensurate periodic processes, such as heartbeat and breathing, with the goal of separating out these motions using cohomology.
 
 %\begin{figure}[]
 %	\centering

@@ -13,10 +13,10 @@ Multimedia Exposition
 
 [Part 1: Sliding Window Review on 1D Signals]
 
-[3.mp3] Before launching into videos, let's first review sliding window embeddings of one dimensional time series data.
+[3.mp3] Before launching into videos, let's first review sliding window embeddings of one dimensional time series data.S
 
 [Fade into 1sine.png]
-This first video shows a pure sinusoid with a period of 60 samples.  
+[3.5.mp3] This first video shows a pure sinusoid with a period of 60 samples.  
 
 [4.mp3]
 [Start playing 1sine.ogg]
@@ -36,11 +36,11 @@ We slide a window of length 60 from left to right, and we display 2D PCA of the 
 
 [8.mp3]
 
-Even though we can't visualize the geometry in 3 dimensions without loss, we can still use other high dimensional tools.  In this case, we compute the one dimensional persistence diagram for the Rips complex, which indicates the geometric strength of loops in a point cloud.
+Even though we can't visualize the geometry in 3 dimensions without loss, we can still use other high dimensional tools.  In this case, we compute the one dimensional persistence diagram for the Rips filtration, which indicates the geometric strength of loops in a point cloud.
 
 [Jump to PD2SinesCommensurate2.png]
 
-[9.mp3] In this example, there is one strong class corresponding to the loop that this sliding window embedding completes over and over again on the hypertorus
+[9.mp3] In this example, there is one strong class corresponding to the loop that this sliding window embedding completes over and over again on the 2-torus
 
 [Fade to Sinesnoncommensurate.png]
 
@@ -70,7 +70,7 @@ In this example, it appears that the sliding window embedding is filling out a s
 
 [Fade into VideoStackTime.png]
 
-[17.mp3] The idea is exactly the same, except instead of a sliding window for a 1D time series, we concatenate the result of a sliding window on every single pixel into one large Euclidean vector.  The results is that each point in the embedding is a bunch of frames stacked on top of each other, and each pixel in each frame is a dimension.
+[17.mp3] The idea is exactly the same, except instead of a sliding window for a 1D time series, we concatenate the result of a sliding window on every single pixel into one large Euclidean vector.  The results is that each point in the embedding is a bunch of frames stacked on top of each other, and each pixel in each frame constitutes a dimension.
 
 [Fade into jumpingjackscropped.avi]
 [18.mp3] Let's look at an example.  Here is a video of a woman doing jumping jacks
@@ -82,7 +82,7 @@ In this example, it appears that the sliding window embedding is filling out a s
 [20.mp3] Yet with our topological tools, we see that indeed there is a strong 1D persistence class corresponding to a cycle.  But why is so little variance explained by the first 3 principal components?
 
 [Fade into Pixel.ogg]
-[21.mp3] For this, we need to understand a common case in natural videos of pixels jumping from the foreground into the background.  This video shows a plot of the average RGB values in the green box pi drawn on the left.  
+[21.mp3] To understand this, we note a common case in natural videos of pixels jumping abruptly from the foreground into the background.  This video shows a plot of the average RGB values in the green box pi drawn on the left.  
 
 [Start playing Pixel.ogg]
 [22.mp3] As you can see, the pixels jump abruptly from foreground to background to foreground again, forming something like a square wave, which needs many harmonics to represent.  As we noted in the 1D case, each harmonic needs two dimensions to represent, and this video at this resolution needs about 25 harmonics.
@@ -91,10 +91,10 @@ In this example, it appears that the sliding window embedding is filling out a s
 
 [Play JumpingJacksPCs/PC0, PC1.avi side by side]
 
-[24.mp3] The first two coordinate axes form a phase and a quadrature component of the smoothest motion in the video
+[24.mp3] The first two coordinate axes form an in phase and a quadrature component of the smoothest motion in the video
 
 [Play JumpingJacksPCs/PC2, PC3.avi side by side]
-[25.mp3] The next two coordinate axes, corresponding to the first harmonic ellipse, form a phase and a quadrature component at twice the base frequency
+[25.mp3] The next two coordinate axes, corresponding to the first harmonic ellipse, form an in phase and a quadrature component at twice the base frequency
 
 [Play JumpingJacksPCs/PC4, PC5.avi side by side]
 [26.mp3] Similarly, the coordinate axes spanning the plane of the second harmonic ellipse are at three times the base frequency
@@ -103,7 +103,7 @@ In this example, it appears that the sliding window embedding is filling out a s
 [27.mp3] And the coordinate axes spanning the plane of the third harmonic ellipse are at four times the base frequency
 
 [Fade into JumpingJacksCircCoords.png]
-[28.mp3] Now le'ts look at the circular coordinates of the curve that results walking around all of these principal circles simultaneously.  Aside from a couple of outliers, these coordinates track three periods of the jumping jack quite nicely.
+[28.mp3] Now let's look at the circular coordinates of the curve that results from walking around ellipses along all of these planes simultaneously.  Aside from a couple of outliers, these coordinates track three periods of the jumping jack quite nicely.
 
 [Fade into JumpingJacksRaw.ogg]
 [29.mp3] Finally, we note that a raw embedding with no sliding window, or each frame as its own point, does not form a topological loop in the embedding.  This is because without the delay, the frames have mirror symmetry between the first half and second half of their period, so it is impossible to uniquely represent all states
@@ -115,18 +115,18 @@ In this example, it appears that the sliding window embedding is filling out a s
 [31.mp3] Let's look at another example video, this time of an animation of a beating heart.
 
 [Fade into BeatingHeartSyntheticSliding.ogg]
-[32.mp3] As with the jumping jacks example, 3D PCA shows a nice loop, though only 29.7% of the variance is explained
+[32.mp3] As with the jumping jacks example, 3D PCA shows a nice loop, though only only about 30% of the variance is explained with these three dimensions
 
 [Fade into PDBeatingHeart.png]
 
-[33.mp3] But the 1D persistence diagram shows a strong cycle exists
+[33.mp3] But again, the 1D persistence diagram shows a strong cycle exists
 
 [Fade into HeartbeatCircCoords.png]
 
 [34.mp3] And the cohomology circular coordinates corresponding to the strongest class nicely parameterize the heartbeat
 
-[Fade into PC videos]
 [35.mp3] And as before, when we look at the principal axes of each ellipse, we see that the lower order ellipses are quite smooth
+[Fade into PC videos]
 
 [36.mp3]
 While the higher order axes represent sharper, higher frequency motions
@@ -142,22 +142,18 @@ While the higher order axes represent sharper, higher frequency motions
 [Fade into SubtleMotionOriginal.ogg]
 
 [39.mp3]
-However, when we look at PCA, we see a cyclic pattern along a cylinder.
+However, when we look at PCA, ignoring the first few components which correspond to drift, we see a cyclic pattern along a cylinder.
 
 [Fade into PDBeatingNeck.png]
 [40.mp3]
 
-And when we look at the 1D persistence diagram 
-
-[Fade into PDBeatingNeck2.png]
-
-[41.mp3] We see a very strong 1D persistence class.  What's going on here?
+And when we look at the 1D persistence diagram. [Fade into PDBeatingNeck2.png] We see a very strong 1D persistence class.  What's going on here?
 
 [Fade into SubtleMotionAmplified.ogg]
 
 [42.mp3] If we apply phase-based video magnification techniques to the video to boost subtle signals and show PCA again, we see what's actually been captured by the sliding window embedding is something related to the person's heartbeat.
 
-[43.mp3] Notice how the subclavic artery causes the collarbone to move up and down with each heartbeat, for example, and notice how the person shakes back and forth twice for each heartbeat.  It's this shaking that causes the delay embedding to go through two loops for each beat.
+[43.mp3] Notice, for example, how the subclavic artery causes the collarbone to move up and down with each heartbeat, and notice how the person shakes back and forth twice for each heartbeat.  It's this shaking that causes the delay embedding to go through two loops for each beat.
 
 [Fade into HiddenMotionCircCoords.png]
-[44.mp3] Indeed, the cohomology circular coordinate parameterization matches this.  Based on the framerate and the observation that the circular coordinates are picking up on twice the heartbeat, we estimate the average heartrate of this person to be between 61 and 62 beats per minute.
+[44.mp3] Indeed, the cohomology circular coordinate parameterizes this motion nicely.  Based on the framerate of 25 frames per second and the observation that the circular coordinates are picking up on twice the heartbeat, we estimate the average heartrate of this person to be between 61 and 62 beats per minute.

@@ -18,9 +18,9 @@ class PCAGLCanvas(BasicMeshCanvas):
         self.frameNum = 0
         #Initialize sphere mesh
         self.mesh = getSphereMesh(SPHERE_RADIUS, 3)
-        bbox = BBox3D()
-        bbox.fromPoints(Y)
-        self.camera.centerOnBBox(bbox, theta = angles[0, 0], phi = angles[0, 1]) #theta = -math.pi/2, phi = math.pi/2)
+        self.bbox = BBox3D()
+        self.bbox.fromPoints(Y)
+        self.camera.centerOnBBox(self.bbox, theta = angles[0, 0], phi = angles[0, 1]) #theta = -math.pi/2, phi = math.pi/2)
         self.Refresh()
     
     def setupPerspectiveMatrix(self):

@@ -11,9 +11,16 @@ Multimedia Exposition
 
 [2.mp3] To address this, we invoke tools from topological data analysis to parameterize the embeddings with circular coordinates.  In doing so, we are able to parameterize periodic motions in videos, even if they are extremely subtle"
 
+[Part 0: PCA And Topological Data Analysis]
+
+We briefly review two prerequisites for understanding this work: PCA and topological data analysis
+
+
+
+
 [Part 1: Sliding Window Review on 1D Signals]
 
-[3.mp3] Before launching into videos, let's first review sliding window embeddings of one dimensional time series data.S
+[3.mp3] Before launching into sliding window videos, we also need to review sliding window embeddings of one dimensional time series data.
 
 [Fade into 1sine.png]
 [3.5.mp3] This first video shows a pure sinusoid with a period of 60 samples.  
